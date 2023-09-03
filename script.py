@@ -24,8 +24,8 @@ def capture_video():
         gray = cv.cvtColor(frame, cv.COLOR_BGR2GRAY)
         # show modified frame
         cv.imshow('frame', frame)
-        cv.imshow('gray', gray)
-        if cv.waitKey(1) == ord('q'):
+        cv.imshow('gray_frame', gray)
+        if cv.waitKey(1) == ord('q'):   # press 'q' on the frame shown to quit capture
             break
 
     # release after everything is done !important
@@ -54,6 +54,8 @@ def capture_video2file():
         # write the new frame to file
         out.write(frame)
         cv.imshow('frame', frame)
+        print(f'Frame Width x Height: {cap.get(cv.CAP_PROP_FRAME_WIDTH)} x {cap.get(cv.CAP_PROP_FRAME_HEIGHT)} ')
+        print(f'Backend: {cap.get(cv.CAP_PROP_BACKEND)}')
         if cv.waitKey(1) == ord('q'):
             break
 
@@ -63,5 +65,30 @@ def capture_video2file():
     cv.destroyAllWindows()
 
 
+def play_video_from_file():
+    """Play video from file saved on disk"""
+
+    # pass video file name instead of camera index
+    cap = cv.VideoCapture('output.avi')
+
+    while cap.isOpened():
+        ret, frame = cap.read()
+
+        if not ret:
+            print('Cannot receive frame. Exiting...')
+            break
+
+        gray = cv.cvtColor(frame, cv.COLOR_BGR2GRAY)
+        cv.imshow('frame', gray)
+        if cv.waitKey(25) == ord('q'):
+            break
+    cap.release()
+    cv.destroyAllWindows()
+
+
 if __name__ == '__main__':
-    capture_video()
+    # capture_video()           # capture and show video on screen
+
+    # capture_video2file()      # capture, show and save video to file
+
+    play_video_from_file()      # play video from file
