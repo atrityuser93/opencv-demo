@@ -41,8 +41,10 @@ def capture_video2file():
     cap = cv.VideoCapture(0)
 
     # define codec and create VideoWriter object
-    fourcc = cv.VideoWriter_fourcc(*'XVID')
-    out = cv.VideoWriter('output.avi', fourcc, 20.0, (640, 480))
+    fourcc = cv.VideoWriter_fourcc(*'mp4v')
+    fourcc_2 = cv.VideoWriter_fourcc(*'XVID')
+    out = cv.VideoWriter('output.mp4', fourcc, 20.0, (640, 480))
+    out2 = cv.VideoWriter('bw_output.avi', fourcc_2, 20, (640, 480), False)
 
     while cap.isOpened():
         ret, frame = cap.read()
@@ -50,18 +52,22 @@ def capture_video2file():
             print('Frame cannot be received. Exiting...')
             break
         # flip the received frame
-        frame = cv.flip(frame, 0)
+        flip_frame = cv.flip(frame, 0)
+        bw_frame = cv.cvtColor(frame, cv.COLOR_BGR2GRAY)
         # write the new frame to file
         out.write(frame)
+        out2.write(bw_frame)
+        cv.imshow('bw_frame', bw_frame)
         cv.imshow('frame', frame)
-        print(f'Frame Width x Height: {cap.get(cv.CAP_PROP_FRAME_WIDTH)} x {cap.get(cv.CAP_PROP_FRAME_HEIGHT)} ')
-        print(f'Backend: {cap.get(cv.CAP_PROP_BACKEND)}')
+        # print(f'Frame Width x Height: {cap.get(cv.CAP_PROP_FRAME_WIDTH)} x {cap.get(cv.CAP_PROP_FRAME_HEIGHT)} ')
+        # print(f'Backend: {cap.get(cv.CAP_PROP_BACKEND)}')
         if cv.waitKey(1) == ord('q'):
             break
 
     # release everything once job is done
     cap.release()
     out.release()
+    out2.release()
     cv.destroyAllWindows()
 
 
@@ -89,6 +95,6 @@ def play_video_from_file():
 if __name__ == '__main__':
     # capture_video()           # capture and show video on screen
 
-    # capture_video2file()      # capture, show and save video to file
+    capture_video2file()      # capture, show and save video to file
 
-    play_video_from_file()      # play video from file
+    # play_video_from_file()      # play video from file
