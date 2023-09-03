@@ -42,9 +42,9 @@ def capture_video2file():
 
     # define codec and create VideoWriter object
     fourcc = cv.VideoWriter_fourcc(*'mp4v')
-    fourcc_2 = cv.VideoWriter_fourcc(*'XVID')
+    fourcc_2 = cv.VideoWriter_fourcc(*'mp4v')
     out = cv.VideoWriter('output.mp4', fourcc, 20.0, (640, 480))
-    out2 = cv.VideoWriter('bw_output.avi', fourcc_2, 20, (640, 480), False)
+    out2 = cv.VideoWriter('bw_output.mp4', fourcc_2, 20, (640, 480), False)
 
     while cap.isOpened():
         ret, frame = cap.read()
